@@ -3,7 +3,9 @@
     "version": "0.0.0",
     "description": "Flappy Bird like game featuring Sonic The Hedgehog",
     "dependencies": {
+	"socket.io": "latest",
         "express": "latest",
+        "mongodb": "latest",
         "jade": "latest"
     },
     "author": "namelivia"

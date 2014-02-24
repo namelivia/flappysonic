@@ -1,12 +1,14 @@
 var canvas;
 var stage;
-var state = 0;
+var state;
+var ticks = 0;
 
 var player;
 var scenario;
 var enemies;
 var music;
 var currentScore;
+var playerName;
 
 var messageField;
 
@@ -14,6 +16,7 @@ var loadingInterval = 0;
 var preload;
 
 function init() {
+	socket = io.connect('http://192.168.1.128:60000');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
 	
@@ -24,6 +27,23 @@ function init() {
 	messageField.y = canvas.height / 2;
 	stage.addChild(messageField);
 	stage.update();
+	/*socket.emit('send', { getHiscores:""}
+	);*/
+
+	var nameButton = document.getElementById("set");
+	nameButton.onclick= function(){
+                if (ValidateForm()){
+                        document.getElementById("rooster").style.display = "none";
+                        document.getElementById("content").style.display = "block";
+                }
+        };
+
+	//Process server responses
+	socket.on('message', function (data) {
+        	if(data.hiscores){
+			UpdateHiscores(data.hiscores);
+		}
+	});
 
 	var manifest = [
 		{id:"floor", src:"img/background1.png"},
@@ -73,6 +93,7 @@ function handleClick() {
 }
 
 function restart() {
+	state = 0;
 	stage.removeAllChildren();
 	scenario = new Scenario(preload.getResult("clouds"),preload.getResult("floor"));
 	player = new Sonic(preload.getResult("sonic"));
@@ -81,7 +102,6 @@ function restart() {
 	stage.addChild(scenario,player,enemies,score);
 	music = createjs.Sound.play("music");
 	currentScore = enemies.score;
-
 	canvas.onclick = doJump;
 
 	if (!createjs.Ticker.hasEventListener("tick")) { 
@@ -102,8 +122,18 @@ function tick(event) {
 			canvas.onclick = null;
 			player.die(preload.getResult("sonicHit"));
 			state = 1;
+			ticks = 0;
 			music.stop();
 			createjs.Sound.play("miss");
+			socket.emit('send', { hiscore: currentScore, name: playerName});
+		}
+	}
+	if (state == 1){
+		ticks++;
+		if (ticks == 100){
+			messageField.text = "Click to restart";
+			stage.addChild(messageField);
+			canvas.onclick = restart;
 		}
 	}
 	stage.update(event);
@@ -113,5 +143,29 @@ function tick(event) {
 		currentScore = newScore;
 		createjs.Sound.play("ring");
 		score.update(newScore);
+	}
+}
+
+function ValidateForm(){
+        var valid = true;
+        if (document.getElementById("name").value == ""){
+                valid = false;
+                document.getElementById("noName").style.display = "block";
+        } else {
+                playerName = document.getElementById("name").value;
+                document.getElementById("noName").style.display = "none";
+        }
+        return valid;
+}
+
+function UpdateHiscores(data){
+	var table = document.getElementById("hiscoresTable");
+	for (i = 0; i < data.length; i++) {
+		var row = table.insertRow(1);
+		var name = row.insertCell(0);
+		var score = row.insertCell(1);
+
+		name.innerHTML = data[i].name;
+		score.innerHTML = data[i].hiscore;
 	}
 }
