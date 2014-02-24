@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+    head
+        title= "Flappy Sonic"
+        script(src='/lib/createjs-2013.12.12.min.js')
+        script(src='/lib/Collision-Detection-for-EaselJS/src/ndgmr.Collision.js')
+        script(src='/js/game.js')
+        script(src='/js/Sonic.js')
+        script(src='/js/Score.js')
+        script(src='/js/Scenario.js')
+        script(src='/js/Enemies.js')
+        link(rel='stylesheet', href='/css/style.css')
+    body(onload="init()")
+        #content
+            canvas#gameCanvas(width=320, height=288)

@@ -1,0 +1,10 @@
+{
+    "name": "FlappySonic",
+    "version": "0.0.0",
+    "description": "Flappy Bird like game featuring Sonic The Hedgehog",
+    "dependencies": {
+        "express": "latest",
+        "jade": "latest"
+    },
+    "author": "namelivia"
+}
