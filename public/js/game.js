@@ -16,7 +16,7 @@ var loadingInterval = 0;
 var preload;
 
 function init() {
-	socket = io.connect('http://192.168.1.128:60000');
+	socket = io.connect('http://nosferatu.sytes.net:60000');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
 	
@@ -27,21 +27,21 @@ function init() {
 	messageField.y = canvas.height / 2;
 	stage.addChild(messageField);
 	stage.update();
-	/*socket.emit('send', { getHiscores:""}
-	);*/
 
 	var nameButton = document.getElementById("set");
 	nameButton.onclick= function(){
                 if (ValidateForm()){
                         document.getElementById("rooster").style.display = "none";
                         document.getElementById("content").style.display = "block";
+                        document.getElementById("hiscoresTable").style.display = "table";
+			socket.emit('send', { getHiscores:"data"});
                 }
         };
 
 	//Process server responses
 	socket.on('message', function (data) {
         	if(data.hiscores){
-			UpdateHiscores(data.hiscores);
+			UpdateHiscores(data.hiscores.reverse());
 		}
 	});
 
@@ -159,13 +159,16 @@ function ValidateForm(){
 }
 
 function UpdateHiscores(data){
-	var table = document.getElementById("hiscoresTable");
+	var new_tbody = document.createElement('tbody');
 	for (i = 0; i < data.length; i++) {
-		var row = table.insertRow(1);
+		var row = new_tbody.insertRow(0);
 		var name = row.insertCell(0);
 		var score = row.insertCell(1);
 
 		name.innerHTML = data[i].name;
 		score.innerHTML = data[i].hiscore;
 	}
+	var table = document.getElementById("hiscoresTable");
+	var tableBody = document.getElementById("hiscoresTableBody");
+	table.replaceChild(new_tbody,tableBody);
 }

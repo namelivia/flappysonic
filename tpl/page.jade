@@ -17,13 +17,13 @@ html(lang="en")
                 thead
                     tr: th Name 
                         th Score 
-                tbody
+                tbody#hiscoresTableBody
         #leftContainer
             #rooster
-                p Introduce un nombre para jugar
+                p Enter your name to play
                 input#name(style='width:350px;')
                 div(style='clear:both;')
-                input#set(type='button', value='Aceptar')
+                input#set(type='button', value='Accept')
                 p.error#noName Debes introducir tu nombre para jugar
             #content
                 canvas#gameCanvas(width=320, height=288)

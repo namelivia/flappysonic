@@ -3,7 +3,8 @@ h1{color:#ffffff;}
 #rooster {user-select: none;width: 600px;height: 400px;margin:50px auto;text-align:center;}
 #content{user-select:none;background-color:#010054;width:320px;height:288px;margin:50px
 auto;display:none;}
-#hiscoresTable{margin:50px auto;border: 1px solid #e3e3e3;background-color: #020202;border-radius: 6px;-webkit-border-radius: 6px;-moz-border-radius: 6px;}
+#hiscoresTable{margin:50px auto;border: 1px solid #e3e3e3;background-color: #020202;border-radius:
+6px;-webkit-border-radius: 6px;-moz-border-radius: 6px;display:none;}
 #hiscoresTable td, #hiscoresTable th {padding: 5px;color:#ffffff;text-align:center;}
 #hiscoresTable th{font-weight:bold;border-bottom:solid 1px #ffffff;}
 p.error{color:#ff0000;display:none}
