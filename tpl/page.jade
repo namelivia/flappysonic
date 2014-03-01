@@ -11,19 +11,22 @@ html(lang="en")
         script(src='/js/Scenario.js')
         script(src='/js/Enemies.js')
         link(rel='stylesheet', href='/css/style.css')
+        meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
     body(onload="init()")
+        #logo
+            img(src='/img/logo.png')
         #rightContainer
             table#hiscoresTable
                 thead
-                    tr: th Name 
+                    tr: th Name
                         th Score 
                 tbody#hiscoresTableBody
         #leftContainer
-            #rooster
-                p Enter your name to play
-                input#name(style='width:350px;')
-                div(style='clear:both;')
-                input#set(type='button', value='Accept')
-                p.error#noName Debes introducir tu nombre para jugar
             #content
                 canvas#gameCanvas(width=320, height=288)
+        #rooster
+            h1 Enter your name to play
+            input#name(style='width:350px;')
+            div(style='clear:both;')
+            input#set(type='button', value='Play')
+            p.error#noName You must enter your name to play
