@@ -16,7 +16,7 @@ var loadingInterval = 0;
 var preload;
 
 function init() {
-	socket = io.connect('http://192.168.1.128:60000');
+	socket = io.connect('http://flappysonic.namelivia.com');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
 	
