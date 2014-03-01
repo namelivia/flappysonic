@@ -32,8 +32,9 @@ function init() {
 	nameButton.onclick= function(){
                 if (ValidateForm()){
                         document.getElementById("rooster").style.display = "none";
-                        document.getElementById("content").style.display = "block";
-                        document.getElementById("hiscoresTable").style.display = "table";
+                        document.getElementById("leftContainer").style.display = "block";
+                        document.getElementById("rightContainer").style.display = "block";
+                        document.getElementById("centralContainer").style.display = "block";
 			socket.emit('send', { getHiscores:"data"});
                 }
         };

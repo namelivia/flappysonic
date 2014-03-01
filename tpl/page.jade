@@ -15,15 +15,17 @@ html(lang="en")
     body(onload="init()")
         #logo
             img(src='/img/logo.png')
-        #rightContainer
-            table#hiscoresTable
-                thead
-                    tr: th Name
-                        th Score 
-                tbody#hiscoresTableBody
         #leftContainer
+            p Top Scores
+            table#hiscoresTable
+                tbody#hiscoresTableBody
+        #centralContainer
             #content
                 canvas#gameCanvas(width=320, height=288)
+        #rightContainer
+            p Last Scores
+            table#lastscoresTable
+                tbody#lastscoresTableBody
         #rooster
             h1 Enter your name to play
             input#name(style='width:350px;')
