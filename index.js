@@ -28,6 +28,9 @@ io.sockets.on('connection', function (socket) {
 		  var results = collection.find({}).sort({hiscore: -1}).limit(10).toArray(function(err, results){
 		    io.sockets.emit('message', { hiscores: results});
 		  });
+		  var results2 = collection.find({}).sort([['_id', -1]]).limit(10).toArray(function(err, results2){
+			  io.sockets.emit('message', {lastscores: results2});
+		  });
 	  });
         }
 	if (data.getHiscores){
@@ -36,7 +39,10 @@ io.sockets.on('connection', function (socket) {
 		  if(err) { return console.dir(err); }
 		  var collection = db.collection('hiscores');
 		  var results = collection.find({}).sort({hiscore: -1}).limit(10).toArray(function(err, results){
-		    io.sockets.emit('message', { hiscores: results});
+			  io.sockets.emit('message', {hiscores: results});
+		  });
+		  var results2 = collection.find({}).sort([['_id', -1]]).limit(10).toArray(function(err, results2){
+			  io.sockets.emit('message', {lastscores: results2});
 		  });
 	  });
 	}
