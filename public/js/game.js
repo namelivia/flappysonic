@@ -9,6 +9,8 @@ var enemies;
 var music;
 var currentScore;
 var playerName;
+var hiscoresTable;
+var lastscoresTable;
 
 var messageField;
 
@@ -19,6 +21,9 @@ function init() {
 	socket = io.connect('http://flappysonic.namelivia.com');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
+
+	hiscoresTable = document.getElementById("hiscoresTable");
+	lastscoresTable = document.getElementById("lastscoresTable");
 	
 	messageField = new createjs.Text("Loading", "bold 24px Helvetica", "#FFFFFF");
 	messageField.maxWidth = 1000;
@@ -43,6 +48,9 @@ function init() {
 	socket.on('message', function (data) {
         	if(data.hiscores){
 			UpdateHiscores(data.hiscores.reverse());
+		}
+        	if(data.lastscores){
+			UpdateLastscores(data.lastscores.reverse());
 		}
 	});
 
@@ -169,7 +177,18 @@ function UpdateHiscores(data){
 		name.innerHTML = data[i].name;
 		score.innerHTML = data[i].hiscore;
 	}
-	var table = document.getElementById("hiscoresTable");
-	var tableBody = document.getElementById("hiscoresTableBody");
-	table.replaceChild(new_tbody,tableBody);
+	hiscoresTable.replaceChild(new_tbody,hiscoresTable.tBodies[0]);
+}
+
+function UpdateLastscores(data){
+	var new_tbody = document.createElement('tbody');
+	for (i = 0; i < data.length; i++) {
+		var row = new_tbody.insertRow(0);
+		var name = row.insertCell(0);
+		var score = row.insertCell(1);
+
+		name.innerHTML = data[i].name;
+		score.innerHTML = data[i].hiscore;
+	}
+	lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0]);
 }
