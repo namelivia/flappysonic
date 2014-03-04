@@ -13,6 +13,15 @@ html(lang="en")
         link(rel='stylesheet', href='/css/style.css')
         meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
     body(onload="init()")
+        #fb-root
+        script.
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1&appId=601429036605120";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
         #logo
             img(src='/img/logo.png')
         #leftContainer
@@ -22,6 +31,7 @@ html(lang="en")
         #centralContainer
             #content
                 canvas#gameCanvas(width=320, height=288)
+                .fb-like (data-href="http://flappysonic.namelivia.com" data-layout="box_count" data-action="like" data-show-faces="true" data-share="false")
         #rightContainer
             p Last Scores
             table#lastscoresTable
