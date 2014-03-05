@@ -1,14 +1,20 @@
-body{margin:0;background-color:#303030;color:#ffffff;background: #000000 url('/img/background.png') 0px
+body{margin:0;background-color:#303030;color:#ffffff;background: #000000 url('/img/background.png') no-repeat 0px
 0px;background-size:cover;font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",Helvetica, Arial, "Lucida Grande", sans-serif;font-weight: 300;}
 h1{color:#ffffff;text-shadow:5px 5px 5px #000000}
-#rooster {user-select: none;width: 600px;height: 400px;margin:20px auto;text-align:center;}
+a{text-decoration:none;}
+#rooster {user-select: none;width: 600px;height: 240px;margin:20px auto;text-align:center;}
 #content{user-select:none;background-color:#010054;width:320px;height:288px;margin:20px auto;}
 #hiscoresTable,#lastscoresTable{margin:0px auto;border: 1px solid #e3e3e3;background: rgba(50, 50, 50, 0.5);border-radius:
 6px;-webkit-border-radius: 6px;-moz-border-radius: 6px;}
 #hiscoresTable td,#hiscoresTable th ,#lastscoresTable td,#lastscoresTable th{padding: 5px;color:#ffffff;text-align:center;}
 #hiscoresTable th,#lastscoresTable th{font-weight:bold;}
-p.error{display:none;background: rgba(50,50,50,0.5);padding:5px;border:solid 1px
+p.error,p.info{background: rgba(50,50,50,0.5);padding:5px;border:solid 1px
 #ffffff;font-weight:bold;border-radius: 6px;-webkit-border-radius: 6px;-moz-border-radius: 6px;}
+p.error{display:none;}
+p.info{width:500px;text-align:center;height:auto;}
+a p.info,a:link p.info,a:active p.info,a:visited p.info{text-decoration:none;color:#ffffff}
+a:hover p.info{text-decoration:none;color:#99ffff;border-color:#99ffff;}
+.legal{font-size:13px;}
 #centralContainer{width:50%;float:left;display:none;}
 #gameCanvas{box-shadow:20px 20px 10px #000000;}
 #footer{position:fixed;bottom:0;width:100%;height:60px;background-color:#000000;padding-left:20px;}
@@ -19,3 +25,7 @@ p.error{display:none;background: rgba(50,50,50,0.5);padding:5px;border:solid 1px
 #set:active {position:relative;top:1px;}
 #rightContainer p,#leftContainer p{text-align:center;font-weight:bold;}
 #rightContainer,#leftContainer{width:25%;float:left;display:none;}
+#social{margin-top:40px;}
+#social-content{margin:0 auto;text-align:center; width:500px; display:block;}
+.social-icon{float:left;margin-left:20px;margin-right:20px;}
+.clearer{clear:both;}
