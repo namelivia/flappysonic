@@ -11,6 +11,7 @@ var currentScore;
 var playerName;
 var hiscoresTable;
 var lastscoresTable;
+var instructions;
 
 var messageField;
 
@@ -57,6 +58,7 @@ function init() {
 	var manifest = [
 		{id:"floor", src:"img/background1.png"},
 		{id:"clouds", src:"img/background2.png"},
+		{id:"instructions", src:"img/instructions.png"},
 		{id:"sonic", src:"img/sonic.png"},
 		{id:"sonicHit", src:"img/sonicdeath.png"},
 		{id:"enemy", src:"img/enemy.png"},
@@ -86,13 +88,15 @@ function updateLoading() {
 
 function doneLoading(event) {
 	clearInterval(loadingInterval);
-	messageField.text = "Click to start";
 	watchRestart();
 }
 
 function watchRestart() {
 	canvas.onclick = handleClick;
-	stage.addChild(messageField);
+	instructions = new createjs.Bitmap(preload.getResult("instructions")); 	
+	instructions.x = 0;
+	instructions.y = 0;
+	stage.addChild(instructions);
 	stage.update();
 }
 
