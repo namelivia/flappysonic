@@ -1,10 +1,12 @@
+require("newrelic");
 var express = require("express");
 var app = express();
 var port = 60000;
 var db;
 app.set('views', __dirname + '/tpl');
 app.use(express.static(__dirname + '/public'));
-app.use(express.favicon(__dirname + '/static/favicon.ico'));
+//Arreglar favicon!
+//app.use(express.favicon(__dirname + '/static/favicon.ico'));
 app.set('view engine', "jade");
 app.engine('jade', require('jade').__express);
 app.get("/", function(req, res){
