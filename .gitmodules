@@ -1,0 +1,3 @@
+[submodule "Collision-Detection-for-EaselJS"]
+    path = public/lib/Collision-Detection-for-EaselJS
+    url = git://github.com/olsn/Collision-Detection-for-EaselJS.git
