@@ -92,7 +92,8 @@ function doneLoading(event) {
 }
 
 function watchRestart() {
-	canvas.onclick = handleClick;
+	canvas.addEventListener('mousedown',handleClick,false);
+	canvas.addEventListener('touchstart',handleClick,false);
 	instructions = new createjs.Bitmap(preload.getResult("instructions")); 	
 	instructions.x = 0;
 	instructions.y = 0;
@@ -100,7 +101,8 @@ function watchRestart() {
 	stage.update();
 }
 
-function handleClick() {
+function handleClick(event) {
+	event.preventDefault();
 	stage.removeChild(messageField);
 	restart();
 }
@@ -115,14 +117,20 @@ function restart() {
 	stage.addChild(scenario,player,enemies,score);
 	music = createjs.Sound.play("music");
 	currentScore = enemies.score;
-	canvas.onclick = doJump;
+	canvas.removeEventListener('mousedown', handleClick);
+	canvas.removeEventListener('touchstart', handleClick);
+	canvas.removeEventListener('mousedown',restart,false);
+	canvas.removeEventListener('touchstart',restart,false);
+	canvas.addEventListener('mousedown',doJump,false);
+	canvas.addEventListener('touchstart',doJump,false);
 
 	if (!createjs.Ticker.hasEventListener("tick")) { 
 		createjs.Ticker.addEventListener("tick", tick);
 	}                                               
 }
 
-function doJump() {
+function doJump(event) {
+	event.preventDefault();
 	player.doJump();
 }
 
@@ -132,7 +140,8 @@ function tick(event) {
 	enemies.tick(event,state);
 	if (state == 0){
 		if (enemies.collision(player.sonic) || player.sonic.y < -60 || player.sonic.y > 280){
-			canvas.onclick = null;
+			canvas.removeEventListener('mousedown', doJump);
+			canvas.removeEventListener('touchstart', doJump);
 			player.die(preload.getResult("sonicHit"));
 			state = 1;
 			ticks = 0;
@@ -146,7 +155,8 @@ function tick(event) {
 		if (ticks == 100){
 			messageField.text = "Click to restart";
 			stage.addChild(messageField);
-			canvas.onclick = restart;
+			canvas.addEventListener('mousedown',restart,false);
+			canvas.addEventListener('touchstart',restart,false);
 		}
 	}
 	stage.update(event);

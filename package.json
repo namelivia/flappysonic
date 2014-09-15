@@ -6,8 +6,7 @@
 	"socket.io": "latest",
         "express": "latest",
         "mongodb": "latest",
-        "jade": "latest",
-        "newrelic": "latest"
+        "jade": "latest"
     },
     "author": "namelivia"
 }
