@@ -109,7 +109,6 @@ function watchRestart() {
 }
 
 function handleClick() {
-	stage.removeChild(messageField);
 	handleClickFastButton.destroy();
 	restart();
 }
@@ -117,6 +116,7 @@ function handleClick() {
 function restart() {
 	state = 0;
 	stage.removeAllChildren();
+	stage.update();
 	scenario = new Scenario(preload.getResult("clouds"),preload.getResult("floor"));
 	player = new Sonic(preload.getResult("sonic"));
 	enemies = new Enemies(preload.getResult("enemy"));      
