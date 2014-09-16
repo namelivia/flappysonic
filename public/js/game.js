@@ -18,7 +18,12 @@ var messageField;
 var loadingInterval = 0;
 var preload;
 
+var handleClickFastButton;
+var doJumpFastButton;
+var restartFastButton;
+
 function init() {
+
 	socket = io.connect('http://flappysonic.namelivia.com');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
@@ -74,6 +79,7 @@ function init() {
 	preload.addEventListener("complete", doneLoading);
 	preload.addEventListener("progress", updateLoading);
 	preload.loadManifest(manifest);
+	social();
 }
 
 function stop() {
@@ -92,8 +98,9 @@ function doneLoading(event) {
 }
 
 function watchRestart() {
-	canvas.addEventListener('mousedown',handleClick,false);
-	canvas.addEventListener('touchstart',handleClick,false);
+	handleClickFastButton = new FastButton(canvas, function() {
+		handleClick();
+	});
 	instructions = new createjs.Bitmap(preload.getResult("instructions")); 	
 	instructions.x = 0;
 	instructions.y = 0;
@@ -101,9 +108,9 @@ function watchRestart() {
 	stage.update();
 }
 
-function handleClick(event) {
-	event.preventDefault();
+function handleClick() {
 	stage.removeChild(messageField);
+	handleClickFastButton.destroy();
 	restart();
 }
 
@@ -117,20 +124,19 @@ function restart() {
 	stage.addChild(scenario,player,enemies,score);
 	music = createjs.Sound.play("music");
 	currentScore = enemies.score;
-	canvas.removeEventListener('mousedown', handleClick);
-	canvas.removeEventListener('touchstart', handleClick);
-	canvas.removeEventListener('mousedown',restart,false);
-	canvas.removeEventListener('touchstart',restart,false);
-	canvas.addEventListener('mousedown',doJump,false);
-	canvas.addEventListener('touchstart',doJump,false);
+	if (restartFastButton){
+		restartFastButton.destroy();
+	}
+	doJumpFastButton = new FastButton(canvas, function() {
+		doJump();
+	});
 
 	if (!createjs.Ticker.hasEventListener("tick")) { 
 		createjs.Ticker.addEventListener("tick", tick);
 	}                                               
 }
 
-function doJump(event) {
-	event.preventDefault();
+function doJump() {
 	player.doJump();
 }
 
@@ -140,8 +146,7 @@ function tick(event) {
 	enemies.tick(event,state);
 	if (state == 0){
 		if (enemies.collision(player.sonic) || player.sonic.y < -60 || player.sonic.y > 280){
-			canvas.removeEventListener('mousedown', doJump);
-			canvas.removeEventListener('touchstart', doJump);
+			doJumpFastButton.destroy();
 			player.die(preload.getResult("sonicHit"));
 			state = 1;
 			ticks = 0;
@@ -155,8 +160,9 @@ function tick(event) {
 		if (ticks == 100){
 			messageField.text = "Click to restart";
 			stage.addChild(messageField);
-			canvas.addEventListener('mousedown',restart,false);
-			canvas.addEventListener('touchstart',restart,false);
+			restartFastButton = new FastButton(canvas, function() {
+				restart();
+			});
 		}
 	}
 	stage.update(event);
@@ -205,4 +211,25 @@ function UpdateLastscores(data){
 		score.innerHTML = data[i].hiscore;
 	}
 	lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0]);
+}
+
+function social(){
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1&appId=601429036605120";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+	!function(d,s,id){
+		var js,fjs=d.getElementsByTagName(s)[0];
+		if(!d.getElementById(id)){js=d.createElement(s);
+		js.id=id;js.src="https://platform.twitter.com/widgets.js";
+		fjs.parentNode.insertBefore(js,fjs);}
+	}(document,"script","twitter-wjs");
+	(function() {
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = 'https://apis.google.com/js/platform.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
 }

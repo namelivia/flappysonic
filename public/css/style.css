@@ -29,3 +29,4 @@ a:hover p.info{text-decoration:none;color:#99ffff;border-color:#99ffff;}
 #social-content{margin:0 auto;text-align:center; width:500px; display:block;}
 .social-icon{float:left;margin-left:20px;margin-right:20px;}
 .clearer{clear:both;}
+canvas{user-select: none;-webkit-user-select: none;-moz-user-select: none;}
