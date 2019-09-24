@@ -1,15 +1,15 @@
-var express = require("express");
+var express = require('express');
 var app = express();
 var port = 60000;
 var db;
 app.set('views', __dirname + '/tpl');
 app.use(express.static(__dirname + '/public'));
-//Arreglar favicon!
+//TODO: Fix favicon!
 //app.use(express.favicon(__dirname + '/static/favicon.ico'));
-app.set('view engine', "jade");
-app.engine('jade', require('jade').__express);
-app.get("/", function(req, res){
-    res.render("page");
+app.set('view engine', 'pug');
+app.engine('pug', require('pug').__express);
+app.get('/', function(req, res){
+    res.render('page');
 });
 
 //Database 
@@ -17,12 +17,12 @@ var MongoClient = require('mongodb').MongoClient;
 
 //Sockets
 var io = require('socket.io').listen(app.listen(port));
-console.log("Listening on port " + port);
+console.log('Listening on port ' + port);
 io.sockets.on('connection', function (socket) {
     socket.on('send', function (data) {
         if (data.hiscore){
 	  //Store data.hiscore and data.name on DB
-	  MongoClient.connect("mongodb://localhost:27017/test", function(err, db) {
+	  MongoClient.connect('mongodb://localhost:27017/flappysonic', function(err, db) {
 		  if(err) { return console.dir(err); }
 		  var collection = db.collection('hiscores');
 		  var newHiscore = {'hiscore' : data.hiscore, 'name' : data.name};	
@@ -37,7 +37,7 @@ io.sockets.on('connection', function (socket) {
         }
 	if (data.getHiscores){
 	  console.log('hiscores request');
-	  MongoClient.connect("mongodb://localhost:27017/test", function(err, db) {
+	  MongoClient.connect('mongodb://localhost:27017/flappysonic', function(err, db) {
 		  if(err) { return console.dir(err); }
 		  var collection = db.collection('hiscores');
 		  var results = collection.find({}).sort({hiscore: -1}).limit(10).toArray(function(err, results){
