@@ -24,7 +24,7 @@ var restartFastButton;
 
 function init() {
 
-	socket = io.connect('http://flappysonic.namelivia.com');
+	socket = io.connect('https://flappysonic.namelivia.com');
 	canvas = document.getElementById("gameCanvas");
 	stage = new createjs.Stage(canvas);
 
