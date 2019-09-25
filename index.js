@@ -25,8 +25,8 @@ io.sockets.on('connection', function (socket) {
 				() => {
 					console.log('Connected to Database');
 					var newHiscore = new Hiscore({
-						hiscore: util.inspect(data.hiscore),
-						name: util.inspect(data.name),
+						hiscore: data.hiscore,
+						name: data.name,
 					});
 
 					newHiscore.save(function(err) {
@@ -36,15 +36,6 @@ io.sockets.on('connection', function (socket) {
 							console.log('ERROR: ' + err);
 						}
 					});
-
-					//Retrieve old hiscores
-					/*var results = collection.find({}).sort({hiscore: -1}).limit(10).toArray(function(err, results){
-						io.sockets.emit('message', { hiscores: results});
-					});
-					var results2 = collection.find({}).sort([['_id', -1]]).limit(10).toArray(function(err, results2){
-						io.sockets.emit('message', {lastscores: results2});
-					*/
-
 				},
 				err => {
 					console.log('ERROR: connecting to Database. ' + err);
