@@ -5,6 +5,11 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'bundle.js'
 	},
+	resolve: {
+		alias: {
+			createjs: 'createjs/builds/1.0.0/createjs.js'
+		},
+	},
 	module: {
 		rules: [
 			{
@@ -26,6 +31,12 @@ module.exports = {
 						}
 					}
 				]
+			}, {
+				test: /node_modules[/\\]createjs/,
+        loaders: [
+          'imports-loader?this=>window',
+          'exports-loader?window.createjs'
+        ]
 			}, {
 				test: /\.(woff|woff2|ttf|otf|eot)$/,
 					use: [

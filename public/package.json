@@ -7,7 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,12 @@
     "@babel/preset-env": "^7.7.4",
     "babel-loader": "^8.0.6",
     "file-loader": "^5.0.2",
+    "jest": "^24.9.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "babel-jest": "^24.9.0",
+    "createjs": "^1.0.1"
   }
 }
