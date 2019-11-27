@@ -1,0 +1,22 @@
+{
+  "name": "flappy-sonic-client",
+  "version": "0.0.1",
+  "description": "Flappy bird like game featuring Sonic the Hedgehog",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "file-loader": "^5.0.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
