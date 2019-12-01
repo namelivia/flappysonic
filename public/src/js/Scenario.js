@@ -1,5 +1,5 @@
 import { Container, Bitmap } from 'createjs'
-export default class Enemies extends Container {
+export default class Scenario extends Container {
 
 	constructor(cloudsImage, floorImage) {
 		super()
@@ -45,4 +45,4 @@ export default class Enemies extends Container {
 
 	sum = (a, b) => (a + b)
 }
-exports.Enemies = Enemies
+exports.Scenario = Scenario

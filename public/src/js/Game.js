@@ -17,7 +17,7 @@ export default class Game {
 		stage.update()
 
 		var nameButton = document.getElementById("set")
-		nameButton.onclick= function(){
+		nameButton.onclick= () => {
 					if (ValidateForm()){
 							document.getElementById("rooster").style.display = "none"
 							document.getElementById("leftContainer").style.display = "block"
@@ -28,7 +28,7 @@ export default class Game {
 			}
 
 		//Process server responses
-		socket.on('message', function (data) {
+		socket.on('message', (data) => {
 				if(data.hiscores){
 				UpdateHiscores(data.hiscores.reverse())
 			}
@@ -59,23 +59,23 @@ export default class Game {
 		social()
 	}
 
-	function stop() {
+	stop() {
 		if (preload != null) { preload.close() }
 		createjs.Sound.stop()
 	}
 
-	function updateLoading() {
+	updateLoading() {
 		messageField.text = "Loading " + (preload.progress*100|0) + "%"
 		stage.update()
 	}
 
-	function doneLoading(event) {
+	doneLoading(event) {
 		clearInterval(loadingInterval)
 		watchRestart()
 	}
 
-	function watchRestart() {
-		handleClickFastButton = new FastButton(canvas, function() {
+	watchRestart() {
+		handleClickFastButton = new FastButton(canvas, () => {
 			handleClick()
 		})
 		instructions = new createjs.Bitmap(preload.getResult("instructions")) 	
@@ -85,12 +85,12 @@ export default class Game {
 		stage.update()
 	}
 
-	function handleClick() {
+	handleClick() {
 		handleClickFastButton.destroy()
 		restart()
 	}
 
-	function restart() {
+	restart() {
 		state = 0
 		stage.removeAllChildren()
 		stage.update()
@@ -104,7 +104,7 @@ export default class Game {
 		if (restartFastButton){
 			restartFastButton.destroy()
 		}
-		doJumpFastButton = new FastButton(canvas, function() {
+		doJumpFastButton = new FastButton(canvas, () => {
 			doJump()
 		})
 
@@ -113,11 +113,11 @@ export default class Game {
 		}                                               
 	}
 
-	function doJump() {
+	doJump() {
 		player.doJump()
 	}
 
-	function tick(event) {
+	tick(event) {
 		player.tick(event,state)
 		scenario.tick(event,state)
 		enemies.tick(event,state)
@@ -137,7 +137,7 @@ export default class Game {
 			if (ticks == 100){
 				messageField.text = "Click to restart"
 				stage.addChild(messageField)
-				restartFastButton = new FastButton(canvas, function() {
+				restartFastButton = new FastButton(canvas, () => {
 					restart()
 				})
 			}
@@ -152,7 +152,7 @@ export default class Game {
 		}
 	}
 
-	function ValidateForm(){
+	ValidateForm(){
 			var valid = true
 			if (document.getElementById("name").value == ""){
 					valid = false
@@ -164,9 +164,9 @@ export default class Game {
 			return valid
 	}
 
-	function UpdateHiscores(data){
+	UpdateHiscores(data){
 		var new_tbody = document.createElement('tbody')
-		for (i = 0 i < data.length i++) {
+		for (i = 0; i < data.length; i++) {
 			var row = new_tbody.insertRow(0)
 			var name = row.insertCell(0)
 			var score = row.insertCell(1)
@@ -177,9 +177,9 @@ export default class Game {
 		hiscoresTable.replaceChild(new_tbody,hiscoresTable.tBodies[0])
 	}
 
-	function UpdateLastscores(data){
+	UpdateLastscores(data){
 		var new_tbody = document.createElement('tbody')
-		for (i = 0 i < data.length i++) {
+		for (i = 0; i < data.length; i++) {
 			var row = new_tbody.insertRow(0)
 			var name = row.insertCell(0)
 			var score = row.insertCell(1)
@@ -190,11 +190,11 @@ export default class Game {
 		lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0])
 	}
 
-	function social(){
+	social(){
 		(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0]
 			if (d.getElementById(id)) return
-			js = d.createElement(s) js.id = id
+			js = d.createElement(s); js.id = id
 			js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1&appId=601429036605120"
 			fjs.parentNode.insertBefore(js, fjs)
 		}(document, 'script', 'facebook-jssdk'))
@@ -205,9 +205,9 @@ export default class Game {
 			fjs.parentNode.insertBefore(js,fjs)}
 		}(document,"script","twitter-wjs")
 		(function() {
-			var po = document.createElement('script') po.type = 'text/javascript' po.async = true
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true
 			po.src = 'https://apis.google.com/js/platform.js'
-			var s = document.getElementsByTagName('script')[0] s.parentNode.insertBefore(po, s)
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s)
 		})()
 	}
 
