@@ -58,4 +58,3 @@ export default class Enemies extends Container {
 
 	sum = (a, b) => (a + b)
 }
-exports.Enemies = Enemies

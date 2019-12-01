@@ -72,4 +72,3 @@ export default class Sonic extends Container {
 		this.addChild(this.sonicHit);
 	}
 }
-exports.Sonic = Sonic

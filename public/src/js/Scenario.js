@@ -45,4 +45,3 @@ export default class Scenario extends Container {
 
 	sum = (a, b) => (a + b)
 }
-exports.Scenario = Scenario
