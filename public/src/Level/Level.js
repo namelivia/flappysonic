@@ -1,8 +1,8 @@
 import { Ticker, Sound } from 'createjs'
-import Scenario from './Scenario/Scenario'
-import Sonic from './Sonic/Sonic'
-import Enemies from './Enemies/Enemies'
-import Score from './Score/Score'
+import Scenario from '../Scenario/Scenario'
+import Sonic from '../Sonic/Sonic'
+import Enemies from '../Enemies/Enemies'
+import Score from '../Score/Score'
 
 export default class Level {
 
@@ -50,15 +50,11 @@ export default class Level {
 		}*/
 	}
 
-	start(stage, preload) {
-		this.stage = stage
+	start(canvas, preload) {
+		this.stage = new Stage(canvas)
 		this.preload = preload
 		//sonic starts alive
 		this.state = 0
-
-		//cleans the stage
-		stage.removeAllChildren()
-		stage.update()
 
 		//loads all entities and adds them to the stage
 		this.scenario = new Scenario(

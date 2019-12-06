@@ -1,8 +1,8 @@
 import { Stage, Sound, Ticker, Bitmap, Text} from 'createjs'
-import Preloader from './Preloader'
-import LoadingText from './LoadingText'
-import Instructions from './Instructions'
-import Level from './Level'
+import Preloader from '../Preloader'
+import LoadingText from '../LoadingText'
+import Instructions from '../Instructions'
+import Level from '../Level/Level'
 
 export default class Game {
 
@@ -20,14 +20,14 @@ export default class Game {
 			this.handleClickFastButton.destroy()
 			restart()
 		})*/
-		canvas.onClick = () => {
+		this.canvas.onClick = () => {
 			this.restart()
 		}
 	}
 
 	restart() {
-		let level = new Level()
-		level.start(this.stage, this.preloader)
+		let level = new Level(this.canvas)
+		level.start(this.preloader)
 	}
 
 	ValidateForm(){
@@ -71,13 +71,13 @@ export default class Game {
 
 		console.log('The game is starting')
 	//socket = io.connect('https://flappysonic.namelivia.com')
-		var canvas = document.getElementById("gameCanvas")
+		this.canvas = document.getElementById("gameCanvas")
 		var hiscoresTable = document.getElementById("hiscoresTable")
 		var lastscoresTable = document.getElementById("lastscoresTable")
 		
 		//LoadingStage
-		this.stage = new Stage(canvas)
-		var loadingText = new LoadingText(this.stage, canvas)
+		this.stage = new Stage(this.canvas)
+		var loadingText = new LoadingText(this.stage, this.canvas)
 
 		//When player has written its name, show the game
 		var nameButton = document.getElementById("set")

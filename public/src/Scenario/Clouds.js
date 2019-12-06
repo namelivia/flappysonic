@@ -9,7 +9,7 @@ export default class Clouds extends Bitmap{
 
 	tick(event, state) {
 		this.x -= 1
-		if (this.x == -640){
+		if (this.x === -640){
 			this.x = 640;
 		}
 	}

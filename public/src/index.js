@@ -1,5 +1,5 @@
-import Game from './Game'
-const init = () => new Game().init().init()
+import Game from './Game/Game'
+const init = () => new Game().init()
 const ready = (fn) => {
   if (document.readyState != 'loading'){
     fn();
