@@ -22,4 +22,7 @@ export class SpriteSheet {
 	}
 }
 export class Bitmap{
+	constructor(data) {
+		return mockedBitmapConstructor(data)
+	}
 }

@@ -1,4 +1,4 @@
-import { Ticker, Sound } from 'createjs'
+import { Stage, Ticker, Sound } from 'createjs'
 import Scenario from '../Scenario/Scenario'
 import Sonic from '../Sonic/Sonic'
 import Enemies from '../Enemies/Enemies'
@@ -51,7 +51,8 @@ export default class Level {
 	}
 
 	start(canvas, preload) {
-		this.stage = new Stage(canvas)
+		this.canvas = canvas
+		this.stage = new Stage(this.canvas)
 		this.preload = preload
 		//sonic starts alive
 		this.state = 0
@@ -64,7 +65,7 @@ export default class Level {
 		this.player = new Sonic(this.preload.getResult('sonic'))
 		this.enemies = new Enemies(this.preload.getResult('enemy'))      
 		this.score = new Score(this.preload.getResult('score'))  
-		stage.addChild(this.scenario, this.player, this.enemies, this.score)
+		this.stage.addChild(this.scenario, this.player, this.enemies, this.score)
 
 		//starts playing the level music
 		this.music = Sound.play('music')
@@ -77,8 +78,7 @@ export default class Level {
 			restartFastButton.destroy()
 		}*/
 
-		//attaches the click action to the player jump
-		//doJumpFastButton = new FastButton(canvas, player.doJump)
+		this.canvas.addEventListener('click', () => this.player.doJump());
 
 		//attaches the update action
 		if (!Ticker.hasEventListener('tick')) { 

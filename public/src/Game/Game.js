@@ -1,33 +1,22 @@
-import { Stage, Sound, Ticker, Bitmap, Text} from 'createjs'
+import { Stage, Sound, Bitmap, Text} from 'createjs'
 import Preloader from '../Preloader'
 import LoadingText from '../LoadingText'
-import Instructions from '../Instructions'
+import Instructions from '../Instructions/Instructions'
 import Level from '../Level/Level'
 
 export default class Game {
 
-	stop() {
-		if (preload != null) { preload.close() }
-		Sound.stop()
-	}
-
-	doneLoading() {
-		//TODO:what is this for?
-		//clearInterval(loadingInterval)
-		
-		//Probably I won't use fastclick anymore
-		/*this.handleClickFastButton = new FastButton(canvas, () => {
-			this.handleClickFastButton.destroy()
-			restart()
-		})*/
-		this.canvas.onClick = () => {
-			this.restart()
+	//Not used
+	/*stop() {
+		if (preload) {
+			preload.close()
 		}
-	}
+		Sound.stop()
+	}*/
 
 	restart() {
-		let level = new Level(this.canvas)
-		level.start(this.preloader)
+		let level = new Level(this.canvas, this.preloader)
+		level.start()
 	}
 
 	ValidateForm(){
@@ -67,17 +56,37 @@ export default class Game {
 		lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0])
 	}
 
+	startLoading() {
+		var loadingText = new LoadingText(this.stage, this.canvas)
+		this.preloader = new Preloader(
+			() => {
+				console.log(this.preloader.getProgress())
+				loadingText.update(this.preloader.getProgress(), this.stage)
+			},
+			() => {
+				//TODO:what is this for?
+				//clearInterval(loadingInterval)
+				/*this.handleClickFastButton = new FastButton(canvas, () => {
+					this.handleClickFastButton.destroy()
+					restart()
+				})*/
+				new Instructions(this.stage, this.preloader),
+				this.canvas.addEventListener('click', () => this.restart());
+			}
+		)
+		this.preloader.load()
+	}
+
 	init() {
 
-		console.log('The game is starting')
-	//socket = io.connect('https://flappysonic.namelivia.com')
+		//socket = io.connect('https://flappysonic.namelivia.com')
 		this.canvas = document.getElementById("gameCanvas")
-		var hiscoresTable = document.getElementById("hiscoresTable")
-		var lastscoresTable = document.getElementById("lastscoresTable")
-		
-		//LoadingStage
+		this.hiscoresTable = document.getElementById("hiscoresTable")
+		this.lastscoresTable = document.getElementById("lastscoresTable")
 		this.stage = new Stage(this.canvas)
-		var loadingText = new LoadingText(this.stage, this.canvas)
+			
+		//LoadingStage
+		this.startLoading()
 
 		//When player has written its name, show the game
 		var nameButton = document.getElementById("set")
@@ -101,17 +110,5 @@ export default class Game {
 			}
 		})*/
 
-		//starts preloading
-		this.preloader = new Preloader(
-			() => loadingText.update(this.preloader.getProgress(), this.stage),
-			() => {
-				this.restart()
-				/*new Instructions(this.stage, this.preloader),
-				canvas.onClick = () => {
-					this.restart()
-				}*/
-			}
-		)
-		this.preloader.load()
 	}
 }
