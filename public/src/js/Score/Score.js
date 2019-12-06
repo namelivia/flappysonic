@@ -22,7 +22,7 @@ export default class Score extends Container {
 	}
 
 	setup(spritesheet) {
-
+		SpriteSheetData.images = [spritesheet]
 		let spriteSheet = new SpriteSheet(SpriteSheetData);
 
 		this.score1 = new Sprite(spriteSheet, "zero")

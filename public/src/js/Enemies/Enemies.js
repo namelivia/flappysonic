@@ -30,10 +30,10 @@ export default class Enemies extends Container {
 	collision (sonic) {
 		var collision = false;
 		var i = 0;
-		while (!collision && i <this.NUM_ENEMIES){
+		/*while (!collision && i <this.NUM_ENEMIES){
 			var collision = ndgmr.checkPixelCollision(sonic,this.enemies[i]);
 			i++;
-		}
+		}*/
 		return collision;
 	}
 
