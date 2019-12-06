@@ -1,7 +1,7 @@
-import Scenario from './Scenario'
-import Sonic from './Sonic'
-import Enemies from './Enemies'
-import Score from './Score'
+import Scenario from './Scenario/Scenario'
+import Sonic from './Sonic/Sonic'
+import Enemies from './Enemies/Enemies'
+import Score from './Score/Score'
 
 export default class Level {
 

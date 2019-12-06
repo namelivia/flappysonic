@@ -12,8 +12,9 @@ export default class Game {
 	}
 
 	doneLoading() {
-		//what is this for?
+		//TODO:what is this for?
 		//clearInterval(loadingInterval)
+		
 		//Probably I won't use fastclick anymore
 		/*this.handleClickFastButton = new FastButton(canvas, () => {
 			this.handleClickFastButton.destroy()

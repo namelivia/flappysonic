@@ -13,6 +13,7 @@ export class Sprite {
 	constructor(data, animation) {
 		return mockedSpriteConstructor(data, animation)
 	}
+	currentAnimation = 'currentAnimation'
 	gotoAndPlay = gotoAndPlayMock
 }
 export class SpriteSheet {

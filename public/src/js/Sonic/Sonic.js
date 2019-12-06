@@ -1,7 +1,6 @@
 import { Container, Sprite, SpriteSheet} from 'createjs'
 
 export const SpriteSheetData = {
-	//"images": [spritesheet],
 	"frames": {"regX": 0, "height": 64, "count": 12, "regY": 0, "width": 64},
 	"animations": {"up": [0, 2, "up"],
 	"straight": [3, 5, "straight"],
@@ -9,8 +8,7 @@ export const SpriteSheetData = {
 	"dead": [9, 11, "dead"]}
 }
 
-export const DyingSpriteSheetData = {
-	//"images": [spritesheet],
+export const HurtSpriteSheetData = {
 	"frames": {"regX": 0, "height": 64, "count": 2, "regY": 0, "width": 48},
 	"animations": {"dead": [0, 0, "dead"],
 				   "hurt": [1, 1, "hurt"]}
@@ -23,41 +21,58 @@ export default class Sonic extends Container {
 	}
 
 	setup(spritesheet) {
-		var dataSonic = new SpriteSheet(SpriteSheetData);
-		this.sonic = new Sprite(dataSonic, "straight");
-		this.sonic.framerate = 5;
-		this.sonic.x = 50;
-		this.sonic.y = 50;
-		this.addChild(this.sonic);
-		this.jump = 0;
+		SpriteSheetData.images = [spritesheet]
+		var dataSonic = new SpriteSheet(SpriteSheetData)
+		this.sprite = new Sprite(dataSonic, "straight")
+		this.sprite.framerate = 5
+		this.sprite.x = 50
+		this.sprite.y = 50
+		this.addChild(this.sprite)
+		this.jump = 0
+	}
+
+	updateVerticalPosition() {
+		this.sprite.y += 10
+		this.sprite.y -= this.jump
+	}
+
+	decreaseJump() {
+		this.jump -= 2
+	}
+
+	isJumping() {
+		return this.jump > 0
+	}
+
+	isGoingUp() {
+		return this.jump > 10
+	}
+
+	setAnimation(key) {
+		if (this.sprite.currentAnimation != key) {
+			this.sprite.gotoAndPlay(key);
+		}
+	}
+
+	isDead(state) {
+		return state === 1 //TODO: use a constant
 	}
 
 	tick(event, state) {
-		this.sonic.y = this.sonic.y+10;
-		this.sonic.y = this.sonic.y-this.jump;
-		if (this.jump > 0){
-			this.jump = this.jump-2;
-			if (this.jump > 10){
-				if (this.sonic.currentAnimation != "up") {
-					this.sonic.gotoAndPlay("up");
-				}
-			} else {
-				if (this.sonic.currentAnimation != "straight") {
-					this.sonic.gotoAndPlay("straight");
-				}
+		let newAnimationKey = 'down'
+		if (this.isDead(state)) {
+			newAnimationKey = 'dead'
+			this.sprite.x += 6;
+			this.hurtSprite.y += 15;
+			this.hurtSprite.x -= 3;
+		} else {
+			this.updateVerticalPosition()
+			if (this.isJumping()){
+				this.decreaseJump()	
+				newAnimationKey = this.isGoingUp() ? 'up' : 'straight'
 			}
 		}
-		else if (this.sonic.currentAnimation != "down") {
-			this.sonic.gotoAndPlay("down");
-		}
-		if (state == 1){
-			if(this.sonic.currentAnimation != "dead"){
-				this.sonic.gotoAndPlay("dead");
-			}
-			this.sonic.x=this.sonic.x+6;
-			this.sonicHit.y=this.sonicHit.y+15;
-			this.sonicHit.x=this.sonicHit.x-3;
-		}
+		this.setAnimation(newAnimationKey)
 	}
 
 	doJump() {
@@ -65,10 +80,11 @@ export default class Sonic extends Container {
 	}
 
 	die(spritesheet) {
-		var dataSonicHit = SpriteSheet(DyingSpriteSheetData);
-        this.sonicHit = Sprite(dataSonicHit, "hurt");
-		this.sonicHit.x = this.sonic.x;
-		this.sonicHit.y = this.sonic.y;
-		this.addChild(this.sonicHit);
+		HurtSpriteSheetData.images = [spritesheet]
+		var dataSonicHurt = new SpriteSheet(HurtSpriteSheetData);
+        this.hurtSprite = new Sprite(dataSonicHurt, 'hurt');
+		this.hurtSprite.x = this.sprite.x;
+		this.hurtSprite.y = this.sprite.y;
+		this.addChild(this.hurtSprite);
 	}
 }

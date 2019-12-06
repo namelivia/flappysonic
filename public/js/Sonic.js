@@ -74,7 +74,7 @@
                         "animations": {"dead": [0, 0, "dead"],
                                        "hurt": [1, 1, "hurt"]}
                 });
-                this.sonicHit = new createjs.Sprite(dataSonicHit, "hurt");
+        this.sonicHit = new createjs.Sprite(dataSonicHit, "hurt");
 		this.sonicHit.x = this.sonic.x;
 		this.sonicHit.y = this.sonic.y;
 		this.addChild(this.sonicHit);
