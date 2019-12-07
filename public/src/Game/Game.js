@@ -15,8 +15,13 @@ export default class Game {
 	}*/
 
 	restart() {
-		let level = new Level(this.canvas, this.preloader)
-		level.start()
+		this.canvas.removeEventListener('click', evt => this.restartOnClick(event))
+		let level = new Level()
+		level.start(this.canvas, this.preloader)
+	}
+
+	restartOnClick(event) {
+		this.restart()
 	}
 
 	ValidateForm(){

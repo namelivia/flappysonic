@@ -17,8 +17,9 @@ export default class Level {
 			if (this.enemies.collision(this.player.sprite) ||
 				this.player.sprite.y < -60 || this.player.sprite.y > 280
 			){
-				//doJumpFastButton.destroy()
-				this.player.die(this.preload.getResult('sonicHit'))
+				console.log('cant jump')
+				this.canvas.removeEventListener('click', evt => this.jumpOnClick(event))
+				this.player.die(this.preloader.getResult('sonicHit'))
 				this.state = 1
 				this.ticks = 0
 				this.music.stop()
@@ -36,6 +37,8 @@ export default class Level {
 				/*restartFastButton = new FastButton(canvas, () => {
 					restart()
 				})*/
+				console.log('can restart')
+				this.canvas.addEventListener('click', evt => this.restartOnClick(event))
 			}
 		}
 
@@ -50,39 +53,37 @@ export default class Level {
 		}*/
 	}
 
-	start(canvas, preload) {
+	jumpOnClick(event) {
+		this.player.doJump()
+	}
+
+	restartOnClick(event) {
+		this.start(this.canvas, this.preloader)
+	}
+
+	start(canvas, preloader) {
 		this.canvas = canvas
 		this.stage = new Stage(this.canvas)
-		this.preload = preload
-		//sonic starts alive
+		this.preloader = preloader
 		this.state = 0
-
-		//loads all entities and adds them to the stage
 		this.scenario = new Scenario(
-			this.preload.getResult('clouds'),
-			this.preload.getResult('floor')
+			this.preloader.getResult('clouds'),
+			this.preloader.getResult('floor')
 		)
-		this.player = new Sonic(this.preload.getResult('sonic'))
-		this.enemies = new Enemies(this.preload.getResult('enemy'))      
-		this.score = new Score(this.preload.getResult('score'))  
+		this.player = new Sonic(this.preloader.getResult('sonic'))
+		this.enemies = new Enemies(this.preloader.getResult('enemy'))      
+		this.score = new Score(this.preloader.getResult('score'))  
 		this.stage.addChild(this.scenario, this.player, this.enemies, this.score)
 
-		//starts playing the level music
 		this.music = Sound.play('music')
-
-		//initializes the score (not sure why score is in enemies)
 		this.currentScore = this.enemies.score
 
-		//what is this for? Probably I will not use this
-		/*if (restartFastButton){
-			restartFastButton.destroy()
-		}*/
-
-		this.canvas.addEventListener('click', () => this.player.doJump());
-
-		//attaches the update action
+		console.log('cant restart')
+		this.canvas.removeEventListener('click', evt => this.restartOnClick(event))
+		console.log('can jump')
+		this.canvas.addEventListener('click', evt => this.jumpOnClick(event))
 		if (!Ticker.hasEventListener('tick')) { 
-			Ticker.addEventListener('tick', evt => this.tick(evt));
+			Ticker.addEventListener('tick', evt => this.tick(evt))
 		}
 	}
 }

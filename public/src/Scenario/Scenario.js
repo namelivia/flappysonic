@@ -10,9 +10,9 @@ export default class Scenario extends Container {
 
 	setup(cloudsImage, floorImage) {
 		this.floor1 = new Floor(floorImage, 0); 	
-		this.floor2 = new Floor(floorImage, 647); 	
-		this.clouds1 = new Floor(cloudsImage, 0); 	
-		this.clouds2 = new Clouds(cloudsImage, 192); 	
+		this.floor2 = new Floor(floorImage, 674); 	
+		this.clouds1 = new Clouds(cloudsImage, 0); 	
+		this.clouds2 = new Clouds(cloudsImage, 640); 	
 
 		this.addChild(
 			this.floor1,
