@@ -15,18 +15,18 @@ export default class Game {
 	}*/
 
 	restart() {
-		this.canvas.removeEventListener('click', evt => this.restartOnClick(event))
 		let level = new Level()
 		level.start(this.canvas, this.preloader)
 	}
 
 	restartOnClick(event) {
+		this.canvas.removeEventListener('click', evt => this.restartOnClick(event))
 		this.restart()
 	}
 
-	ValidateForm(){
-		let newName = document.getElementById("name")
-		if (newName == ""){
+	setName(){
+		let newName = document.getElementById("name").value
+		if (newName.length === 0){
 			document.getElementById("noName").style.display = "block"
 			return false
 		} else {
@@ -96,7 +96,7 @@ export default class Game {
 		//When player has written its name, show the game
 		var nameButton = document.getElementById("set")
 		nameButton.onclick = () => {
-			if (this.ValidateForm()){
+			if (this.setName()){
 				document.getElementById("rooster").style.display = "none"
 				document.getElementById("leftContainer").style.display = "block"
 				document.getElementById("rightContainer").style.display = "block"
