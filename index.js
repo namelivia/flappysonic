@@ -1,7 +1,6 @@
 var express = require('express');
 	mongoose = require('mongoose'),
 	Hiscore = require('./models/hiscores.js'),
-	Config = require('./config.js'),
 	app = express();
 	port = 60000;
 
@@ -21,7 +20,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('send', function (data) {
 		//Recieving a new hiscore
 		if (data.hiscore) {
-			mongoose.connect(Config.database_url, { useNewUrlParser: true, useUnifiedTopology: true }).then(
+			mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 				() => {
 					console.log('Connected to Database');
 					var newHiscore = new Hiscore({
@@ -45,7 +44,7 @@ io.sockets.on('connection', function (socket) {
 		//Retrieve all hiscores
 		if (data.getHiscores) {
 			console.log('Hiscores request');
-			mongoose.connect(Config.database_url, { useNewUrlParser: true, useUnifiedTopology: true }).then(
+			mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(
 				() => {
 					console.log('Connected to Database');
 					//Best scores
