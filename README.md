@@ -1,5 +1,4 @@
-flappysonic
-===========
+# flappysonic [![tag](https://img.shields.io/github/tag/namelivia/flappysonic.svg)](https://github.com/namelivia/flappysonic/releases) [![Build Status](https://travis-ci.org/namelivia/flappysonic.svg?branch=master)](https://travis-ci.org/namelivia/flappysonic)
 
 Flappy Bird like game featuring Sonic The Hedgehog.
 Play it here: flappysonic.namelivia.com
