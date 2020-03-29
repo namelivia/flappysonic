@@ -25,5 +25,5 @@
   "dependencies": {
     "babel-jest": "^24.9.0",
     "createjs": "^1.0.1"
-	}
+  }
 }
