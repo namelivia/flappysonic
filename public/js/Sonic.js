@@ -18,7 +18,7 @@
 
 	p.initialize = function (spritesheet) {
 		this.Container_initialize();
-		var dataSonic= new createjs.SpriteSheet({
+		var dataSonic = new createjs.SpriteSheet({
                         "images": [spritesheet],
                         "frames": {"regX": 0, "height": 64, "count": 12, "regY": 0, "width": 64},
                         "animations": {"up": [0, 2, "up"],

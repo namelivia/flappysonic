@@ -14,13 +14,17 @@ export default class Game {
 		Sound.stop()
 	}*/
 
+	onCanvasClick = () => this.restart()
+
 	restart() {
-		let level = new Level()
-		level.start(this.canvas, this.preloader)
+		console.log('remove event listener')
+		this.canvas.removeEventListener('click', this.onCanvasClick)
+		var level = new Level(this.canvas, this.preloader)
+		level.start()
 	}
 
-	restartOnClick(event) {
-		this.canvas.removeEventListener('click', evt => this.restartOnClick(event))
+	restartOnClick(evt) {
+		this.canvas.removeEventListener('click', evt => this.restartOnClick(evt))
 		this.restart()
 	}
 
@@ -62,12 +66,13 @@ export default class Game {
 	}
 
 	startLoading() {
-		var loadingText = new LoadingText(this.stage, this.canvas)
+		let loadingText = new LoadingText(this.stage, this.canvas)
 		this.preloader = new Preloader(
+			//onLoading
 			() => {
-				console.log(this.preloader.getProgress())
 				loadingText.update(this.preloader.getProgress(), this.stage)
 			},
+			//onLoaded
 			() => {
 				//TODO:what is this for?
 				//clearInterval(loadingInterval)
@@ -76,7 +81,8 @@ export default class Game {
 					restart()
 				})*/
 				new Instructions(this.stage, this.preloader),
-				this.canvas.addEventListener('click', () => this.restart());
+				console.log('add event listener')
+				this.canvas.addEventListener('click', this.onCanvasClick);
 			}
 		)
 		this.preloader.load()
