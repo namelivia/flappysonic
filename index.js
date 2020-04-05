@@ -6,6 +6,7 @@ var express = require('express');
 
 app.set('views', __dirname + '/tpl');
 app.use(express.static(__dirname + '/public'));
+app.use('/scripts', express.static(__dirname + '/node_modules/flappysonic-client/dist/'));
 //TODO: Fix favicon!
 //app.use(express.favicon(__dirname + '/static/favicon.ico'));
 app.set('view engine', 'pug');
