@@ -5,7 +5,7 @@
 	"author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com> (https://namelivia.com)",
 	"dependencies": {
 		"express": "^4.17.1",
-		"mongoose": "^5.9.6",
+		"mongoose": "^5.9.7",
 		"pug": "^2.0.4",
 		"socket.io": "^2.3.0"
 	}
