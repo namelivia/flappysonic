@@ -1,73 +1,48 @@
-(function (window) {
+import { Container, Bitmap } from 'createjs'
+export default class Enemies extends Container {
 
-	function Enemies(spritesheet) {
-		this.initialize(spritesheet);
+	constructor(cloudsImage, floorImage) {
+		super()
+		this.setup(cloudsImage, floorImage)
 	}
 
-	var p = Enemies.prototype = new createjs.Container();
-
-// constants:
-	p.NUM_ENEMIES = 4;
-
-// public properties:
-	p.enemies = [];
-	p.hole;
-	p.score;
-
-// constructor:
-	p.Container_initialize = p.initialize;	//unique to avoid overiding base class
-
-	p.initialize = function (spritesheet) {
-		this.score = 0;
-		this.Container_initialize();
-		var dataEnemy= new createjs.SpriteSheet({
-                        "images": [spritesheet],
-                        "frames": {"regX": 0, "height": 52, "count": 2, "regY": 0, "width": 48},
-                        "animations": {"stay": [0, 1, "stay"]}
-                });
-		this.hole = Math.floor((Math.random()*(this.NUM_ENEMIES+1))-1);
-		for (var i = 0;i<this.NUM_ENEMIES;i++){
-			this.enemies[i] = new createjs.Sprite(dataEnemy, "stay");
-			this.enemies[i].framerate = Math.floor((Math.random()*8));
-			this.enemies[i].x = 350;
-			this.enemies[i].y = (50*i)-8;
-			if (i > this.hole){
-				this.enemies[i].y = this.enemies[i].y+100;
-			}
-			this.addChild(this.enemies[i]);
-		}
+	setup(cloudsImage, floorImage) {
+		this.floor = new Bitmap(floorImage); 	
+		this.floor.x = 0;
+		this.floor.y = 192;
+		this.clouds = new Bitmap(cloudsImage); 	
+		this.clouds.x = 0;
+		this.clouds.y = 0;
+		this.floor2 = new Bitmap(floorImage); 	
+		this.floor2.x = 674;
+		this.floor2.y = 192;
+		this.clouds2 = new Bitmap(cloudsImage); 	
+		this.clouds2.x = 640;
+		this.clouds2.y = 0;
+		this.addChild(this.clouds,this.clouds2,this.floor,this.floor2);
 	}
 
-// public methods:
-	p.tick = function (event,state) {
-		if (state == 0){
-			this.hole = Math.floor((Math.random()*(this.NUM_ENEMIES+1))-1);
-			for (var i = 0;i<this.NUM_ENEMIES;i++){
-				this.enemies[i].x = this.enemies[i].x-6;
-				if (this.enemies[i].x < -60){
-					this.enemies[i].x = 350;
-					this.enemies[i].y = (50*i)-8;
-					if (i > this.hole){
-						this.enemies[i].y = this.enemies[i].y+100;
-					}
-				}
+	tick(event, state) {
+		if (state==0){
+			this.clouds.x = this.clouds.x-1;
+			this.floor.x = this.floor.x-2;
+			this.clouds2.x = this.clouds2.x-1;
+			this.floor2.x = this.floor2.x-2;
+			if (this.floor.x == -674){
+				this.floor.x = 674;
 			}
-			if (this.enemies[0].x == 20){
-				this.score++;
+			if (this.floor2.x == -674){
+				this.floor2.x = 674;
+			}
+			if (this.clouds.x == -640){
+				this.clouds.x = 640;
+			}
+			if (this.clouds2.x == -640){
+				this.clouds2.x = 640;
 			}
 		}
 	}
 
-	p.collision = function (sonic){
-		var collision = false;
-		var i = 0;
-		while (!collision && i <this.NUM_ENEMIES){
-			var collision = ndgmr.checkPixelCollision(sonic,this.enemies[i]);
-			i++;
-		}
-		return collision;
-	}
-
-	window.Enemies = Enemies;
-
-}(window));
+	sum = (a, b) => (a + b)
+}
+exports.Enemies = Enemies

@@ -1,235 +1,215 @@
-var canvas;
-var stage;
-var state;
-var ticks = 0;
+import { Container, Bitmap } from 'createjs'
+export default class Game {
+	init() {
+		socket = io.connect('https://flappysonic.namelivia.com')
+		canvas = document.getElementById("gameCanvas")
+		stage = new createjs.Stage(canvas)
 
-var player;
-var scenario;
-var enemies;
-var music;
-var currentScore;
-var playerName;
-var hiscoresTable;
-var lastscoresTable;
-var instructions;
+		hiscoresTable = document.getElementById("hiscoresTable")
+		lastscoresTable = document.getElementById("lastscoresTable")
+		
+		messageField = new createjs.Text("Loading", "bold 24px Helvetica", "#FFFFFF")
+		messageField.maxWidth = 1000
+		messageField.textAlign = "center"
+		messageField.x = canvas.width / 2
+		messageField.y = canvas.height / 2
+		stage.addChild(messageField)
+		stage.update()
 
-var messageField;
+		var nameButton = document.getElementById("set")
+		nameButton.onclick= function(){
+					if (ValidateForm()){
+							document.getElementById("rooster").style.display = "none"
+							document.getElementById("leftContainer").style.display = "block"
+							document.getElementById("rightContainer").style.display = "block"
+							document.getElementById("centralContainer").style.display = "block"
+				socket.emit('send', { getHiscores:"data"})
+					}
+			}
 
-var loadingInterval = 0;
-var preload;
+		//Process server responses
+		socket.on('message', function (data) {
+				if(data.hiscores){
+				UpdateHiscores(data.hiscores.reverse())
+			}
+				if(data.lastscores){
+				UpdateLastscores(data.lastscores.reverse())
+			}
+		})
 
-var handleClickFastButton;
-var doJumpFastButton;
-var restartFastButton;
+		var manifest = [
+			{id:"floor", src:"img/background1.png"},
+			{id:"clouds", src:"img/background2.png"},
+			{id:"instructions", src:"img/instructions.png"},
+			{id:"sonic", src:"img/sonic.png"},
+			{id:"sonicHit", src:"img/sonicdeath.png"},
+			{id:"enemy", src:"img/enemy.png"},
+			{id:"score", src:"img/score.png"},
+			{id:"miss", src:"snd/miss.ogg"},
+			{id:"ring", src:"snd/ring.ogg"},
+			{id:"music", src:"snd/music.ogg"}
+		]
 
-function init() {
-
-	socket = io.connect('https://flappysonic.namelivia.com');
-	canvas = document.getElementById("gameCanvas");
-	stage = new createjs.Stage(canvas);
-
-	hiscoresTable = document.getElementById("hiscoresTable");
-	lastscoresTable = document.getElementById("lastscoresTable");
-	
-	messageField = new createjs.Text("Loading", "bold 24px Helvetica", "#FFFFFF");
-	messageField.maxWidth = 1000;
-	messageField.textAlign = "center";
-	messageField.x = canvas.width / 2;
-	messageField.y = canvas.height / 2;
-	stage.addChild(messageField);
-	stage.update();
-
-	var nameButton = document.getElementById("set");
-	nameButton.onclick= function(){
-                if (ValidateForm()){
-                        document.getElementById("rooster").style.display = "none";
-                        document.getElementById("leftContainer").style.display = "block";
-                        document.getElementById("rightContainer").style.display = "block";
-                        document.getElementById("centralContainer").style.display = "block";
-			socket.emit('send', { getHiscores:"data"});
-                }
-        };
-
-	//Process server responses
-	socket.on('message', function (data) {
-        	if(data.hiscores){
-			UpdateHiscores(data.hiscores.reverse());
-		}
-        	if(data.lastscores){
-			UpdateLastscores(data.lastscores.reverse());
-		}
-	});
-
-	var manifest = [
-		{id:"floor", src:"img/background1.png"},
-		{id:"clouds", src:"img/background2.png"},
-		{id:"instructions", src:"img/instructions.png"},
-		{id:"sonic", src:"img/sonic.png"},
-		{id:"sonicHit", src:"img/sonicdeath.png"},
-		{id:"enemy", src:"img/enemy.png"},
-		{id:"score", src:"img/score.png"},
-		{id:"miss", src:"snd/miss.ogg"},
-		{id:"ring", src:"snd/ring.ogg"},
-		{id:"music", src:"snd/music.ogg"}
-	];
-
-	preload = new createjs.LoadQueue();
-	createjs.Sound.alternateExtensions = ["mp3"];
-	preload.installPlugin(createjs.Sound);
-	preload.addEventListener("complete", doneLoading);
-	preload.addEventListener("progress", updateLoading);
-	preload.loadManifest(manifest);
-	social();
-}
-
-function stop() {
-	if (preload != null) { preload.close(); }
-	createjs.Sound.stop();
-}
-
-function updateLoading() {
-	messageField.text = "Loading " + (preload.progress*100|0) + "%"
-	stage.update();
-}
-
-function doneLoading(event) {
-	clearInterval(loadingInterval);
-	watchRestart();
-}
-
-function watchRestart() {
-	handleClickFastButton = new FastButton(canvas, function() {
-		handleClick();
-	});
-	instructions = new createjs.Bitmap(preload.getResult("instructions")); 	
-	instructions.x = 0;
-	instructions.y = 0;
-	stage.addChild(instructions);
-	stage.update();
-}
-
-function handleClick() {
-	handleClickFastButton.destroy();
-	restart();
-}
-
-function restart() {
-	state = 0;
-	stage.removeAllChildren();
-	stage.update();
-	scenario = new Scenario(preload.getResult("clouds"),preload.getResult("floor"));
-	player = new Sonic(preload.getResult("sonic"));
-	enemies = new Enemies(preload.getResult("enemy"));      
-	score = new Score(preload.getResult("score"));  
-	stage.addChild(scenario,player,enemies,score);
-	music = createjs.Sound.play("music");
-	currentScore = enemies.score;
-	if (restartFastButton){
-		restartFastButton.destroy();
+		preload = new createjs.LoadQueue()
+		createjs.Sound.alternateExtensions = ["mp3"]
+		preload.installPlugin(createjs.Sound)
+		preload.addEventListener("complete", doneLoading)
+		preload.addEventListener("progress", updateLoading)
+		preload.loadManifest(manifest)
+		social()
 	}
-	doJumpFastButton = new FastButton(canvas, function() {
-		doJump();
-	});
 
-	if (!createjs.Ticker.hasEventListener("tick")) { 
-		createjs.Ticker.addEventListener("tick", tick);
-	}                                               
-}
+	function stop() {
+		if (preload != null) { preload.close() }
+		createjs.Sound.stop()
+	}
 
-function doJump() {
-	player.doJump();
-}
+	function updateLoading() {
+		messageField.text = "Loading " + (preload.progress*100|0) + "%"
+		stage.update()
+	}
 
-function tick(event) {
-	player.tick(event,state);
-	scenario.tick(event,state);
-	enemies.tick(event,state);
-	if (state == 0){
-		if (enemies.collision(player.sonic) || player.sonic.y < -60 || player.sonic.y > 280){
-			doJumpFastButton.destroy();
-			player.die(preload.getResult("sonicHit"));
-			state = 1;
-			ticks = 0;
-			music.stop();
-			createjs.Sound.play("miss");
-			socket.emit('send', { hiscore: currentScore, name: playerName});
+	function doneLoading(event) {
+		clearInterval(loadingInterval)
+		watchRestart()
+	}
+
+	function watchRestart() {
+		handleClickFastButton = new FastButton(canvas, function() {
+			handleClick()
+		})
+		instructions = new createjs.Bitmap(preload.getResult("instructions")) 	
+		instructions.x = 0
+		instructions.y = 0
+		stage.addChild(instructions)
+		stage.update()
+	}
+
+	function handleClick() {
+		handleClickFastButton.destroy()
+		restart()
+	}
+
+	function restart() {
+		state = 0
+		stage.removeAllChildren()
+		stage.update()
+		scenario = new Scenario(preload.getResult("clouds"),preload.getResult("floor"))
+		player = new Sonic(preload.getResult("sonic"))
+		enemies = new Enemies(preload.getResult("enemy"))      
+		score = new Score(preload.getResult("score"))  
+		stage.addChild(scenario,player,enemies,score)
+		music = createjs.Sound.play("music")
+		currentScore = enemies.score
+		if (restartFastButton){
+			restartFastButton.destroy()
+		}
+		doJumpFastButton = new FastButton(canvas, function() {
+			doJump()
+		})
+
+		if (!createjs.Ticker.hasEventListener("tick")) { 
+			createjs.Ticker.addEventListener("tick", tick)
+		}                                               
+	}
+
+	function doJump() {
+		player.doJump()
+	}
+
+	function tick(event) {
+		player.tick(event,state)
+		scenario.tick(event,state)
+		enemies.tick(event,state)
+		if (state == 0){
+			if (enemies.collision(player.sonic) || player.sonic.y < -60 || player.sonic.y > 280){
+				doJumpFastButton.destroy()
+				player.die(preload.getResult("sonicHit"))
+				state = 1
+				ticks = 0
+				music.stop()
+				createjs.Sound.play("miss")
+				socket.emit('send', { hiscore: currentScore, name: playerName})
+			}
+		}
+		if (state == 1){
+			ticks++
+			if (ticks == 100){
+				messageField.text = "Click to restart"
+				stage.addChild(messageField)
+				restartFastButton = new FastButton(canvas, function() {
+					restart()
+				})
+			}
+		}
+		stage.update(event)
+		
+		newScore = enemies.score
+		if (newScore != currentScore){
+			currentScore = newScore
+			createjs.Sound.play("ring")
+			score.update(newScore)
 		}
 	}
-	if (state == 1){
-		ticks++;
-		if (ticks == 100){
-			messageField.text = "Click to restart";
-			stage.addChild(messageField);
-			restartFastButton = new FastButton(canvas, function() {
-				restart();
-			});
+
+	function ValidateForm(){
+			var valid = true
+			if (document.getElementById("name").value == ""){
+					valid = false
+					document.getElementById("noName").style.display = "block"
+			} else {
+					playerName = document.getElementById("name").value
+					document.getElementById("noName").style.display = "none"
+			}
+			return valid
+	}
+
+	function UpdateHiscores(data){
+		var new_tbody = document.createElement('tbody')
+		for (i = 0 i < data.length i++) {
+			var row = new_tbody.insertRow(0)
+			var name = row.insertCell(0)
+			var score = row.insertCell(1)
+
+			name.innerHTML = data[i].name
+			score.innerHTML = data[i].hiscore
 		}
+		hiscoresTable.replaceChild(new_tbody,hiscoresTable.tBodies[0])
 	}
-	stage.update(event);
-	
-	newScore = enemies.score;
-	if (newScore != currentScore){
-		currentScore = newScore;
-		createjs.Sound.play("ring");
-		score.update(newScore);
+
+	function UpdateLastscores(data){
+		var new_tbody = document.createElement('tbody')
+		for (i = 0 i < data.length i++) {
+			var row = new_tbody.insertRow(0)
+			var name = row.insertCell(0)
+			var score = row.insertCell(1)
+
+			name.innerHTML = data[i].name
+			score.innerHTML = data[i].hiscore
+		}
+		lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0])
 	}
-}
 
-function ValidateForm(){
-        var valid = true;
-        if (document.getElementById("name").value == ""){
-                valid = false;
-                document.getElementById("noName").style.display = "block";
-        } else {
-                playerName = document.getElementById("name").value;
-                document.getElementById("noName").style.display = "none";
-        }
-        return valid;
-}
-
-function UpdateHiscores(data){
-	var new_tbody = document.createElement('tbody');
-	for (i = 0; i < data.length; i++) {
-		var row = new_tbody.insertRow(0);
-		var name = row.insertCell(0);
-		var score = row.insertCell(1);
-
-		name.innerHTML = data[i].name;
-		score.innerHTML = data[i].hiscore;
+	function social(){
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0]
+			if (d.getElementById(id)) return
+			js = d.createElement(s) js.id = id
+			js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1&appId=601429036605120"
+			fjs.parentNode.insertBefore(js, fjs)
+		}(document, 'script', 'facebook-jssdk'))
+		!function(d,s,id){
+			var js,fjs=d.getElementsByTagName(s)[0]
+			if(!d.getElementById(id)){js=d.createElement(s)
+			js.id=idjs.src="https://platform.twitter.com/widgets.js"
+			fjs.parentNode.insertBefore(js,fjs)}
+		}(document,"script","twitter-wjs")
+		(function() {
+			var po = document.createElement('script') po.type = 'text/javascript' po.async = true
+			po.src = 'https://apis.google.com/js/platform.js'
+			var s = document.getElementsByTagName('script')[0] s.parentNode.insertBefore(po, s)
+		})()
 	}
-	hiscoresTable.replaceChild(new_tbody,hiscoresTable.tBodies[0]);
-}
 
-function UpdateLastscores(data){
-	var new_tbody = document.createElement('tbody');
-	for (i = 0; i < data.length; i++) {
-		var row = new_tbody.insertRow(0);
-		var name = row.insertCell(0);
-		var score = row.insertCell(1);
-
-		name.innerHTML = data[i].name;
-		score.innerHTML = data[i].hiscore;
-	}
-	lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0]);
-}
-
-function social(){
-	(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/es_ES/all.js#xfbml=1&appId=601429036605120";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-	!function(d,s,id){
-		var js,fjs=d.getElementsByTagName(s)[0];
-		if(!d.getElementById(id)){js=d.createElement(s);
-		js.id=id;js.src="https://platform.twitter.com/widgets.js";
-		fjs.parentNode.insertBefore(js,fjs);}
-	}(document,"script","twitter-wjs");
-	(function() {
-		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-		po.src = 'https://apis.google.com/js/platform.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-	})();
+	sum = (a, b) => (a + b)
 }
