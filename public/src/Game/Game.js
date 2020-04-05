@@ -1,6 +1,6 @@
 import { Stage, Sound, Bitmap, Text} from 'createjs'
-import Preloader from '../Preloader'
-import LoadingText from '../LoadingText'
+import Preloader from '../Preloader/Preloader'
+import LoadingText from '../LoadingText/LoadingText'
 import Instructions from '../Instructions/Instructions'
 import Level from '../Level/Level'
 
@@ -17,7 +17,6 @@ export default class Game {
 	onCanvasClick = () => this.restart()
 
 	restart() {
-		console.log('remove event listener')
 		this.canvas.removeEventListener('click', this.onCanvasClick)
 		var level = new Level(this.canvas, this.preloader)
 		level.start()
@@ -74,14 +73,13 @@ export default class Game {
 			},
 			//onLoaded
 			() => {
-				//TODO:what is this for?
+				//TODO:what was this for?
 				//clearInterval(loadingInterval)
 				/*this.handleClickFastButton = new FastButton(canvas, () => {
 					this.handleClickFastButton.destroy()
 					restart()
 				})*/
 				new Instructions(this.stage, this.preloader),
-				console.log('add event listener')
 				this.canvas.addEventListener('click', this.onCanvasClick);
 			}
 		)

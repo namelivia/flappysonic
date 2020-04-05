@@ -38,7 +38,6 @@ export default class Level {
 	}
 
 	tick(event) {
-		console.log('tick')
 		//updates all entities
 		this.player.tick(event, this.state)
 		this.scenario.tick(event, this.state)
@@ -49,7 +48,6 @@ export default class Level {
 			if (this.enemies.collision(this.player.sprite) ||
 				this.player.sprite.y < -60 || this.player.sprite.y > 280
 			) {
-				console.log('THERE IS A COLLISION!')
 				this.canvas.removeEventListener('click', this.jumpOnClick)
 				this.player.die(this.preloader.getResult('sonicHit'))
 				this.state = 1
@@ -75,19 +73,17 @@ export default class Level {
 				/*restartFastButton = new FastButton(canvas, () => {
 					restart()
     			}*/
-				console.log('can restart')
-				//this.canvas.addEventListener('click', evt => this.restartOnClick(event))
 			}
 		}
 
 		//checks every update if 
 		this.stage.update(event)
 		
-		/*newScore = enemies.score
-		if (newScore != currentScore){
-			currentScore = newScore
+		var newScore = this.enemies.score
+		if (newScore != this.currentScore) {
+			this.currentScore = newScore
 			Sound.play("ring")
-			score.update(newScore)
-		}*/
+			this.score.update(newScore)
+		}
 	}
 }

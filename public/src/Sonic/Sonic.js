@@ -63,6 +63,7 @@ export default class Sonic extends Container {
 		if (this.isDead(state)) {
 			newAnimationKey = 'dead'
 			this.sprite.x += 6;
+			this.sprite.y += 6;
 			this.hurtSprite.y += 15;
 			this.hurtSprite.x -= 3;
 		} else {

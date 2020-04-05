@@ -1,4 +1,5 @@
 import { Container, Sprite, SpriteSheet} from 'createjs'
+import Collision from '../Collision/Collision'
 
 export const SpriteSheetData = {
 	"frames": {"regX": 0, "height": 52, "count": 2, "regY": 0, "width": 48},
@@ -10,6 +11,7 @@ export default class Enemies extends Container {
 	enemies = [];
 	constructor(spritesheet) {
 		super()
+		this.collisionManager = new Collision()
 		this.setup(spritesheet)
 	}
 
@@ -50,10 +52,10 @@ export default class Enemies extends Container {
 	collision (sonic) {
 		var collision = false;
 		var i = 0;
-		/*while (!collision && i <this.NUM_ENEMIES){
-			var collision = ndgmr.checkPixelCollision(sonic,this.enemies[i]);
+		while (!collision && i <this.NUM_ENEMIES){
+			var collision = this.collisionManager.checkPixelCollision(sonic,this.enemies[i]);
 			i++;
-		}*/
+		}
 		return collision;
 	}
 
