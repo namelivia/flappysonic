@@ -1,6 +1,6 @@
 {
     "name": "FlappySonic",
-    "version": "0.0.1",
+    "version": "0.0.4",
     "description": "Flappy Bird like game featuring Sonic The Hedgehog",
     "author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com> (https://namelivia.com)",
     "scripts": {
