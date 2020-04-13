@@ -5,6 +5,9 @@ module.exports = {
         path: path.resolve(__dirname, 'public/js'),
         filename: 'bundle.js',
     },
+    externals: {
+        createjs: 'createjs',
+    },
     module: {
         rules: [
             {
