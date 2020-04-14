@@ -12,7 +12,7 @@
         }
     },
     "dependencies": {
-        "flappysonic-client": "^0.0.6",
+        "flappysonic-client": "^0.0.8",
         "socket.io-client": "^2.3.0",
         "express": "^4.17.1",
         "mongoose": "^5.9.7",

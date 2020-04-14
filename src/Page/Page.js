@@ -1,5 +1,5 @@
 import Socket from '../Socket/Socket'
-import Game from 'flappysonic-client'
+import * as flappysonic from 'flappysonic-client'
 
 export default class Page {
     setName() {
@@ -16,7 +16,7 @@ export default class Page {
     updateScoreTable(data, scoreTable) {
         var new_tbody = document.createElement('tbody')
         for (var i = 0; i < data.length; i++) {
-            var row = new_tbody.insertRow(0)
+            var row = new_tbody.insertRow(-1)
             var name = row.insertCell(0)
             var score = row.insertCell(1)
 
@@ -27,11 +27,11 @@ export default class Page {
     }
 
     updateHiscores(data) {
-        this.UpdateScoreTable(data, this.hiscoresTable)
+        this.updateScoreTable(data, this.hiscoresTable)
     }
 
     updateLastscores(data) {
-        this.UpdateScoreTable(data, this.lastscoresTable)
+        this.updateScoreTable(data, this.lastscoresTable)
     }
 
     init() {
@@ -47,13 +47,23 @@ export default class Page {
                     'block'
                 document.getElementById('centralContainer').style.display =
                     'block'
-                var socket = new Socket(
-                    this.player,
-                    this.updateHiscores,
-                    this.updateLastscores
+                const socket = new Socket(
+                    this.playerName,
+                    (hiscores) => {
+                        this.updateHiscores(hiscores)
+                    },
+                    (lastscores) => {
+                        this.updateLastscores(lastscores)
+                    }
                 )
-                var game = new Game(this.canvas, socket)
-                game.init()
+                socket.queryHiscores()
+                flappysonic.start(
+                    this.canvas,
+                    () => {},
+                    (score) => {
+                        socket.sendHiscore(score)
+                    }
+                )
             }
         }
     }
