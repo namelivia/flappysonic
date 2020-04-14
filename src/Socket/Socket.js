@@ -5,7 +5,6 @@ export default class Socket {
         this.socket = io.connect('https://flappysonic.namelivia.com')
 
         this.socket.on('message', (data) => {
-            console.log(data)
             if (data.hiscores) {
                 onHiscores(data.hiscores)
             }
@@ -17,12 +16,10 @@ export default class Socket {
     }
 
     sendHiscore(score) {
-        console.log('send hiscores')
         this.socket.emit('send', { hiscore: score, name: this.playerName })
     }
 
     queryHiscores() {
-        console.log('query hiscores')
         this.socket.emit('send', { getHiscores: 'data' })
     }
 }
