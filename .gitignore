@@ -1,2 +1,3 @@
 node_modules
-public/js
+public/bundle.js
+public/main.css
