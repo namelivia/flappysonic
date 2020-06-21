@@ -1,4 +1,11 @@
+$breakpoint-tablet: 768px;
+
+html {
+	height:100%;
+}
+
 body {
+	height:100%;
 	margin: 0;
 	background-color: #303030;
 	color: #ffffff;
@@ -17,11 +24,11 @@ a {
 	text-decoration: none;
 }
 
+.container {
+}
+
 #rooster {
 	user-select: none;
-	width: 600px;
-	height: 240px;
-	margin: 20px auto;
 	text-align: center;
 }
 
@@ -73,7 +80,6 @@ p.error {
 }
 
 p.info {
-	width: 500px;
 	text-align: center;
 	height: auto;
 }
@@ -97,9 +103,12 @@ a:hover p.info {
 }
 
 #centralContainer {
-	width: 50%;
-	float: left;
 	display: none;
+	width: 100%;
+	@media (min-width: $breakpoint-tablet) {
+		float: left;
+		width: 50%;
+	}
 }
 
 #gameCanvas {
@@ -118,6 +127,7 @@ a:hover p.info {
 
 #logo img {
 	display: block;
+	max-width:100%;
 	margin: 20px auto;
 }
 
@@ -177,20 +187,26 @@ a:hover p.info {
 
 #rightContainer,
 #leftContainer {
-	width: 25%;
-	float: left;
 	display: none;
+	width: 100%;
+
+	@media (min-width: $breakpoint-tablet) {
+		float: left;
+		width: 25%;
+	}
 }
 
 #social {
+	max-width:500px;
 	margin-top: 40px;
+	@media (min-width: $breakpoint-tablet) {
+		margin: auto;
+		display: block;
+	}
 }
 
 #social-content {
-	margin: 0 auto;
 	text-align: center;
-	width: 500px;
-	display: block;
 }
 
 .social-icon {
