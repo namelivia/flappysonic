@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
     res.render('page')
 })
 
-var io = require('socket.io').listen(app.listen(port))
+var io = require('socket.io')(app.listen(port))
 console.log('Listening on port ' + port)
 io.sockets.on('connection', function (socket) {
     socket.on('send', function (data) {
