@@ -1,6 +1,6 @@
 {
     "name": "FlappySonic",
-    "version": "0.0.9",
+    "version": "0.0.12",
     "description": "Flappy Bird like game featuring Sonic The Hedgehog",
     "author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com> (https://namelivia.com)",
     "scripts": {
@@ -20,7 +20,6 @@
         "socket.io": "^3.1.2"
     },
     "devDependencies": {
-
         "@babel/core": "^7.13.8",
         "@babel/plugin-proposal-class-properties": "^7.13.0",
         "@babel/preset-env": "^7.13.9",
@@ -34,12 +33,13 @@
         "eslint-plugin-prettier": "^3.3.1",
         "file-loader": "^6.2.0",
         "husky": "^5.1.3",
-        "prettier": "^2.2.1",
         "lint-staged": "^10.5.4",
         "mini-css-extract-plugin": "^1.3.9",
+        "prettier": "^2.2.1",
         "sass": "^1.32.8",
         "sass-loader": "^11.0.1",
         "style-loader": "^2.0.0",
+        "url-loader": "^4.1.1",
         "webpack": "^5.24.2",
         "webpack-cli": "^4.5.0"
     }
