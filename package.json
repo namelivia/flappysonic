@@ -35,7 +35,7 @@
         "husky": "^7.0.4",
         "lint-staged": "^12.1.2",
         "mini-css-extract-plugin": "^2.4.5",
-        "prettier": "^2.5.0",
+        "prettier": "^2.5.1",
         "sass": "^1.44.0",
         "sass-loader": "^12.3.0",
         "style-loader": "^3.3.1",
