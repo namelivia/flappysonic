@@ -29,16 +29,6 @@ module.exports = {
                 },
             },
             {
-                test: /\.(jpg|png|gif|woff|eot|ttf|svg)/,
-                    use: {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 50000
-
-                    }
-                }
-            },
-            {
                 test: /\.s[ac]ss$/i,
                 use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
@@ -47,7 +37,7 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css',
-            chunkFilename: '[id].css',
+            chunkFilename: '[id].css'
         }),
     ],
     mode: 'production',

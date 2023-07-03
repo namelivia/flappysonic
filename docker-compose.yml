@@ -9,4 +9,4 @@ services:
       - ./:/app
       - /app/node_modules
     ports:
-      - "8080:8080"
+      - "60000:60000"
