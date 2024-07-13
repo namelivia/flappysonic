@@ -15,7 +15,7 @@
         "flappysonic-client": "^0.0.8",
         "socket.io-client": "^4.7.5",
         "express": "^4.19.2",
-        "mongoose": "^8.4.5",
+        "mongoose": "^8.5.1",
         "pug": "^3.0.3",
         "socket.io": "^4.7.5"
     },
