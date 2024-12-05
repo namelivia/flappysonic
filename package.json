@@ -14,7 +14,7 @@
     "dependencies": {
         "flappysonic-client": "^0.0.8",
         "socket.io-client": "^4.8.1",
-        "express": "^4.21.1",
+        "express": "^4.21.2",
         "mongoose": "^8.8.3",
         "pug": "^3.0.3",
         "socket.io": "^4.8.1"
