@@ -1,8 +1,8 @@
 {
     "name": "FlappySonic",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "Flappy Bird like game featuring Sonic The Hedgehog",
-    "author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com> (https://namelivia.com)",
+    "author": "José Ignacio Amelivia Santiago <hello@namelivia.com> (https://namelivia.com)",
     "scripts": {
         "build": "webpack --config webpack.config.js"
     },
