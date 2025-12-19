@@ -1,0 +1,15 @@
+steps:
+  - name: publish
+    image: woodpeckerci/plugin-docker-buildx:6.0.3
+    settings:
+      platforms: linux/amd64
+      repo: ${CI_REPO_OWNER}/${CI_REPO_NAME}
+      registry: https://index.docker.io/v1/
+      auto_tag: true
+      username: ${CI_REPO_OWNER}
+      password:
+        from_secret: dockerhub_token
+    when:
+      - branch: main
+        event: push
+      - event: tag
